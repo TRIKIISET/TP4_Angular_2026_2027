@@ -1,58 +1,48 @@
+<h1>Panier d'achats</h1>
+<strong>{{ totalItems() }} article(s)</strong>
+<ul>
+    @for(item of items(); track item.id) {
+    <li>
 
+        <img [src]="item.photo" [alt]="item.name">
+        <strong>{{ item.name | titlecase }}</strong>
+        <span> ID: #{{ item.id }}</span>
+
+        <!-- Prix et Contrôle de Quantité -->
+        <span> Prix: {{ item.price }} DT </span>
+
+        <button type="button" (click)="updateQuantity(item, -1)">-</button>
+        <span> {{ item.quantity }} </span>
+        <button type="button" (click)="updateQuantity(item, 1)">+</button>
+    </li>
+    }
+</ul>
+
+<!-- Actions (Ajouter & Supprimer) -->
+<div>
+    <button (click)="addItem()">
+        + Ajouter une bouteille d'eau (0.7 DT)
+    </button>
+</div>
+
+<div>
+    <input type="text" #txt placeholder="Nom de l'article à supprimer...">
+    <button type="button" (click)="deleteItem(txt.value)">
+        Supprimer
+    </button>
+</div>
+
+<!-- Récapitulatif du prix -->
+<div>
     <div>
-      <h1>Panier d'achats</h1>
-      <span>{{ totalItems() }} article(s)</span>
+        <span>Prix Total des articles :{{ totalPrice() | number:'.3' }} DT</span>
     </div>
-
-      <ul>
-        @for(item of items(); track item.id) {
-          <li>
-
-              <img [src]="item.photo" [alt]="item.name" >    
-                <strong>{{ item.name | titlecase }}</strong>
-                <span>   ID: #{{ item.id }}</span>
-
-            <!-- Prix et Contrôle de Quantité -->
-              <span>  Prix: {{ item.price }} DT   </span>            
-
-                <button type="button" (click)="updateQuantity(item, -1)">-</button>
-                <span>  {{ item.quantity }}  </span>
-                <button type="button" (click)="updateQuantity(item, 1)">+</button>
-          </li>
-        }
-      </ul>
-
-      <!-- Actions (Ajouter & Supprimer) -->
-      <div>
-        <div>
-          <button (click)="addItem()">
-            + Ajouter une bouteille d'eau (0.7 DT)
-          </button>
-        </div>
-        
-        <div>
-            <input type="text" #txt  placeholder="Nom de l'article à supprimer...">
-            <button type="button" (click)="deleteItem(txt.value)">
-              Supprimer
-            </button>
-        </div>
-      </div>
-
-      <hr>
-
-      <!-- Récapitulatif du prix -->
-      <div >
-        <div>
-          <span>Prix Total des articles :{{ totalPrice() | number:'.3' }} DT</span>
-        </div>
-        @if(discount() > 0) {
-          <div>
-            <span>Remise : - {{ discount() | number:'.3' }} DT</span>
-          </div>
-        }
-        <div>
-          <strong>Prix Final : {{ finalPrice() | number:'.3' }} DT</strong>
-        </div>
-      </div>
-
-
+    @if(discount() > 0) {
+    <div>
+        <span>Remise : - {{ discount() | number:'.3' }} DT</span>
+    </div>
+    }
+    <div>
+        <strong>Prix Final : {{ finalPrice() | number:'.3' }} DT</strong>
+    </div>
+</div>

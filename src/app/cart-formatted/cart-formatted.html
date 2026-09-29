@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="d-flex justify-content-between text-bg-dark p-3 rounded">
+        <h1>Panier d'achats</h1>
+        <strong>{{ totalItems() }} article(s)</strong>
+    </div>
+
+    <ul class="list-group">
+        @for(item of items(); track item.id) {
+        <li class="list-group-item d-flex justify-content-between">
+            <div>
+                <img [src]="item.photo" [alt]="item.name">
+                <strong>{{ item.name | titlecase }}</strong>
+                <span> ID: #{{ item.id }}</span>
+
+                <span class="badge text-bg-warning"> Prix: {{ item.price }} DT </span>
+            </div>
+
+            <div>
+
+                <div class="input-group mb-3">
+                    <button type="button" (click)="updateQuantity(item, -1)">-</button>
+                    <span class="input-group-text"> {{ item.quantity }} </span>
+                    <button type="button" (click)="updateQuantity(item, 1)">+</button>
+
+                </div>
+            </div>
+        </li>
+        }
+    </ul>
+
+    <!-- Actions (Ajouter & Supprimer) -->
+    <div class="d-flex justify-content-between">
+            <button (click)="addItem()" class="btn btn-success">
+                + Ajouter une bouteille d'eau (0.7 DT)
+            </button>
+
+
+        <div>
+            <input type="text" #txt placeholder="Nom de l'article à supprimer..." >
+            <button type="button" (click)="deleteItem(txt.value)" class = "btn btn-danger">
+                Supprimer
+            </button>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Récapitulatif du prix -->
+    <div class="p-3 rounded" 
+    [class]="(discount()>0)?'text-bg-warning':'text-bg-dark' ">
+        <div>
+            <span>Prix Total des articles :{{ totalPrice() | number:'.3' }} DT</span>
+        </div>
+        @if(discount() > 0) {
+        <div>
+            <span>Remise : - {{ discount() | number:'.3' }} DT</span>
+        </div>
+        }
+        <div>
+            <strong>Prix Final : {{ finalPrice() | number:'.3' }} DT</strong>
+        </div>
+    </div>
+</div>
