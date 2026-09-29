@@ -1,7 +1,8 @@
-import { Component, computed, effect, signal } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { Component, computed, effect, linkedSignal, signal } from '@angular/core';
 
 @Component({
-  imports: [],
+  imports: [JsonPipe],
   selector: 'app-counter',
   styleUrl: './counter.css',
   templateUrl: './counter.html',
@@ -10,6 +11,7 @@ export class Counter {
   valeur = 20;
   carre = this.valeur * this.valeur;
   pair = this.valeur % 2 == 0;
+
   initValeur() {
     this.valeur = 0;
   }
@@ -32,6 +34,4 @@ export class Counter {
       console.log("Valeur actuelle:" + this.value())
     })
   }
-
-
 }
