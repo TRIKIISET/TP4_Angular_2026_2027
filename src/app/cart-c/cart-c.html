@@ -1,0 +1,31 @@
+<div style="font-family: sans-serif; max-width: 500px; margin: auto;">
+      <h2>🛒 Mon Panier d'Achats</h2>
+
+      <ul>
+        @for (item of cart.cartItems(); track item.id) {
+          <li style="margin-bottom: 8px;">
+            <strong>{{ item.name }}</strong> - {{ item.price | currency:'EUR' }}
+            <button (click)="cart.updateQuantity(item.id, -1)">-</button>
+            <span style="padding: 0 8px;">Qté: {{ item.quantity }}</span>
+            <button (click)="cart.updateQuantity(item.id, 1)">+</button>
+          </li>
+        }
+      </ul>
+
+      <hr />
+
+      <p>Nombre d'articles : <strong>{{ cart.totalItems() }}</strong></p>
+      <p>Sous-total : {{ cart.totalPrice() | currency:'EUR' }}</p>
+
+      @if (cart.discount() > 0) {
+        <p style="color: green;">
+          🎉 Remise fidélité appliquée : -{{ cart.discount() | currency:'EUR' }}
+        </p>
+      }
+
+      <h3>Total Final : {{ cart.finalPrice() | currency:'EUR' }}</h3>
+
+      <button (click)="cart.addItem('Casque Audio', 100)">
+        ➕ Ajouter Un Casque (100 €)
+      </button>
+    </div>
