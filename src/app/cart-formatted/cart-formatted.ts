@@ -1,6 +1,7 @@
 import { Component, computed, effect, signal, WritableSignal } from '@angular/core';
 import { Item } from '../item';
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
+import { QueueAction } from 'rxjs/internal/scheduler/QueueAction';
 
 @Component({
   imports: [DecimalPipe, TitleCasePipe],
@@ -38,16 +39,23 @@ export class CartFormatted {
   //       if (item.id == art.id)
   //         art.quantity = Math.max(art.quantity + value, 0)
   //       return art
-  //     })
+  //     }).filter(art => art.quantity >0)
   //   )
   // }
   updateQuantity(item: Item, value: number) {
-    this.items.update(items=>
-      (items.map(art=>(art.id==item.id)?
-     {...art, quantity:Math.max(0, item.quantity+value)}
-      :art
-    )).filter(art => art.quantity >0)
-    )
+    item.quantity = item.quantity+value;
+    this.items.update(items=>[...this.items()].filter(item=>item.quantity>0))
+
+    // let copie = [...this.items()].filter(item=>item.quantity>0)
+
+    // this.items.set(copie)
+    // this.items.update(items=>
+    //   [...items]
+    //   (items.map(art=>(art.id==item.id)?
+    //  {...art, quantity:Math.max(0, item.quantity+value)}
+    //   :art
+    // )).filter(art => art.quantity >0)
+    // )
   }
   addItem(){
      let id= this.items()[this.items().length-1].id+1;
